@@ -75,7 +75,7 @@ class Enum::Member < Module
       @enum, @index, @name = enum, index , name
       @name = name.to_s.downcase
       # Allow Color::Red.is_a?(Color) 
-      #extend enum 
+      extend enum 
     end 
     
     # Allow use of enum members as array indices 

@@ -12,10 +12,12 @@ module SimpleStateMachine
   module ClassMethods
 
     def state_machine(&block)
+      return @sm if @sm
       @sm ||= SimpleStateMachine::Base.new(self)
       @sm.instance_eval(&block) if block_given?
       @sm.enumize!
-      @sm
+      self.const_set(@sm.states_constant_name,@sm.states)
+      return @sm
     end
   end
 
@@ -23,7 +25,7 @@ module SimpleStateMachine
 
     def initialize(*args)
       self.send("#{self.class.state_machine.state_field}=", self.class.state_machine.states[self.class.state_machine.initial_state].to_i)
-      super(*args)
+      super unless self.class.superclass == Object
     end
 
     def enum_status

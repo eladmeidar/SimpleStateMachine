@@ -14,4 +14,14 @@ Gem::Specification.new do |gem|
   gem.name          = "simple_state_machine"
   gem.require_paths = ["lib"]
   gem.version       = SimpleStateMachine::VERSION
+
+  gem.add_development_dependency 'activerecord'
+  gem.add_development_dependency 'rake'
+  gem.add_development_dependency 'sdoc'
+  gem.add_development_dependency 'rspec', '~> 2.0'
+  gem.add_development_dependency 'rr'
+  gem.add_development_dependency 'shoulda'
+  gem.add_development_dependency 'sqlite3'
+  gem.add_development_dependency 'minitest'
+  gem.add_development_dependency 'ruby-debug-completion'
 end

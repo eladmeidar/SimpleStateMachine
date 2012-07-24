@@ -1,0 +1,3 @@
+sqlite3:
+  adapter: sqlite3
+  database: spec/simple_state_machine.sqlite3.db

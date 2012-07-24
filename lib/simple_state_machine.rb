@@ -3,5 +3,6 @@ require File.join(File.dirname(__FILE__), 'simple_state_machine', 'simple_state_
 require File.join(File.dirname(__FILE__), 'simple_state_machine', 'base')
 require File.join(File.dirname(__FILE__), 'simple_state_machine', 'event')
 require File.join(File.dirname(__FILE__), 'simple_state_machine', 'enum')
+require File.join(File.dirname(__FILE__), 'simple_state_machine', 'errors')
 require File.join(File.dirname(__FILE__), 'simple_state_machine', 'transition')
 

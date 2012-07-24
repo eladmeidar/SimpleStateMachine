@@ -1,15 +1,30 @@
 module SimpleStateMachine
   class Base
 
-    attr_reader :states, :events, :transitions, :initial_state, :state_field, :persistency_method
+    attr_reader :states, 
+                :events, 
+                :transitions, 
+                :initial_state, 
+                :state_field, 
+                :persistency_method,
+                :states_constant_name
 
     def initialize(clazz)
       @clazz = clazz
       @_states = []
       @events = {}
       @transitions = {}
-      @status_field = "status"
+      @state_field = "status"
+      @states_constant_name = "STATES"
       @persistency_method = nil
+    end
+
+    def states_constant_name(constant_name = nil)
+      if constant_name.nil?
+        @states_constant_name
+      else
+        @states_constant_name = constant_name.upcase
+      end
     end
 
     def persistency_method(method_name = nil)
@@ -49,7 +64,7 @@ module SimpleStateMachine
 
       @clazz.instance_eval do
         define_method("#{state_name}?") do
-          self.send(self.class.state_machine.status_field) == state_name.to_s
+          self.send(self.class.state_machine.state_field) == state_name.to_s
         end
       end
     end
@@ -74,7 +89,7 @@ module SimpleStateMachine
               fire_state_machine_event(current_state_events[:after_leave])
               fire_state_machine_event(next_state_events[:after_enter])
             rescue Exception => e
-              current_state_events[:on_error].call(e)
+              fire_state_machine_event(current_state_events[:on_error])
             end
             return true
           else
@@ -84,9 +99,8 @@ module SimpleStateMachine
 
         define_method("#{transition_name}!") do
           if !(self.send(transition_name))
-            raise RuntimeError, "Could not transit"
+            raise Exceptions::InvalidTransition, "Could not transit '#{self.enum_status.to_sym.to_s}' to '#{options[:to]}'"
           else
-            self.send(self.class.state_machine.persistency_method)
             return true
           end
         end        

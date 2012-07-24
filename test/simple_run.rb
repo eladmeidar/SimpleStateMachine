@@ -4,6 +4,8 @@ class Miki
 
   include SimpleStateMachine
 
+  attr_accessor :status
+
   state_machine do |sm|
     sm.state_field :status
     sm.initial_state "gay"
@@ -20,10 +22,10 @@ class Miki
   def express_joy
     puts "Singing George Micheal!"
   end
-
-  attr_accessor :status
 end
 
+class Adam < Miki
 
-@a = Miki.new
-@a.reveal
+end
+
+@miki = Adam.new
