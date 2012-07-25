@@ -23,7 +23,6 @@ module SimpleStateMachine
 
     # A #clone callback. we ensure that even the sub elements are cloned - 'deep copy'
     def initialize_copy(orig)
-      puts 'initialize copy'
       super
       @states = orig.states.clone
       @_states = orig.instance_variable_get("@_states").clone
@@ -107,7 +106,7 @@ module SimpleStateMachine
 
           persist = args.first if args.any?
           persist |= false
-          
+
           # check if the transition is available to the current state
           if self.class.state_machine.transitions[transition_name.to_s] && self.class.state_machine.transitions[transition_name.to_s][:from].include?(self.enum_status.to_sym.to_s)
             
