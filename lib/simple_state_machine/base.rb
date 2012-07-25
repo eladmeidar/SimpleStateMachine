@@ -86,7 +86,7 @@ module SimpleStateMachine
       # define a "#state?" method on the object class
       @clazz.instance_eval do
         define_method("#{state_name}?") do
-          self.send(self.class.state_machine.state_field) == state_name.to_s
+          self.send(self.class.state_machine.state_field) == self.class.state_machine.states[state_name].to_i
         end
       end
     end
