@@ -1,3 +1,9 @@
+=begin
+SimpleStateMachine
+==================
+
+This module should be mixed in to a class that needs a state machine implementation. refer to the readme.
+=end
 module SimpleStateMachine
 
   def self.included(base) #:nodoc:
@@ -5,6 +11,7 @@ module SimpleStateMachine
       extend ClassMethods
       include InstanceMethods
 
+      # Alias the enum reference method for the confused end user.
       alias :enum_state :enum_status
 
     end
@@ -12,6 +19,7 @@ module SimpleStateMachine
 
   module ClassMethods
 
+    # When inherited - duplicate the state machine from the parent class and allow the extend it
     def inherited(child)
       me = self
       child.class_eval do
@@ -20,6 +28,7 @@ module SimpleStateMachine
       end
     end
 
+    # Create or return a state machine
     def state_machine(&block)
       return @sm if !(@sm.nil?) && !(block_given?)
       puts "Setting state machine on #{self.name}"
@@ -29,34 +38,34 @@ module SimpleStateMachine
       self.const_set(@sm.states_constant_name,@sm.states)
       return @sm
     end
-
-    def has_state_machine?
-      self.included_modules.include?(SimpleStateMachine)
-    end
   end
 
   module InstanceMethods
 
+    # Set the initial status value
     def initialize(*args)      
       self.send("#{self.class.state_machine.state_field}=", self.class.state_machine.states[self.class.state_machine.initial_state].to_i)            
 
       begin
         super
-      rescue ArgumentError
+      rescue ArgumentError # Catch in case the super does not get parameters
         super()
       end
     end
 
+    # Return the enum status
     def enum_status
       self.class.state_machine.states[self.current_state]
     end
 
+    # Return the current state
     def current_state
       self.send(self.class.state_machine.state_field)
     end
 
     private
 
+    # Fire a callback, support a symbol, string or an array of symbols / strings
     def fire_state_machine_event(event)
       case event.class.name
       when "Proc"

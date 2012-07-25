@@ -1,3 +1,4 @@
+# Require all the files
 require File.join(File.dirname(__FILE__), 'simple_state_machine', 'version')
 require File.join(File.dirname(__FILE__), 'simple_state_machine', 'simple_state_machine')
 require File.join(File.dirname(__FILE__), 'simple_state_machine', 'base')
