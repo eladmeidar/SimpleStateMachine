@@ -1,6 +1,6 @@
 # SimpleStateMachine
 
-TODO: Write a gem description
+SimpleStateMachine is a simple (suprisingly) state machine aimed to provide a simpler implementation and setup for ruby based state machines.
 
 ## Installation
 
@@ -18,7 +18,21 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+SimpleStateMachine provides an easy interface to add states and transitions:
+
+```ruby
+Class Elad
+  state_machine do |sm|
+    sm.initial_state "happy"
+    sm.state_field "status"
+    sm.add_state "mad", :before_enter => :kill_miki, 
+                        :after_enter => :kiss_miki, 
+                        :before_leave => :kick_miki, 
+                        :after_leave => :keep_miki
+    sm.add_transition :get_angry, :from => "happy", :to => "mad"
+  end
+end
+```
 
 ## Contributing
 
