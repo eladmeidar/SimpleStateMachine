@@ -97,10 +97,17 @@ describe SimpleStateMachine do
         Gate.state_machine.persistency_method(:dummy_save)
       end
 
-      it "should call the persistency method when found" do
+      it "should persist on a shebang persistency transition method" do
+        @gate.new_record?.should be_true
+        @gate.make_novice!
+        @gate.new_record?.should be_false
+        @gate.enum_state.should eql(Gate::STATES::NOVICE)
+      end
+
+      it "should not persist on a non-shebang persistency transition method" do
         @gate.new_record?.should be_true
         @gate.make_novice.should be_true
-        @gate.new_record?.should be_false
+        @gate.new_record?.should be_true
         @gate.enum_state.should eql(Gate::STATES::NOVICE)
       end
     end
@@ -228,16 +235,15 @@ describe SimpleStateMachine do
         end
 
         it "should allow a gate to transition from a state that comes from child 'express_beginner' to 'expert', normal method" do
-          @gate.status = ExpressGate::STATES::EXPRESS_BEGINNER          
+          @gate.status = ExpressGate::STATES::EXPRESS_BEGINNER.to_i         
           lambda {
               @gate.demote_express_beginner.should be_true
-            }.should_not raise_error(SimpleStateMachine::Exceptions::InvalidTransition)
-          debugger  
+            }.should_not raise_error(SimpleStateMachine::Exceptions::InvalidTransition)  
           @gate.enum_state.should eql(ExpressGate::STATES::EXPERT)
         end
 
         it "should allow a gate to transition from a state that comes from child 'express_beginner' to state from parent 'expert', shebang method" do
-          @gate.status = ExpressGate::STATES::EXPRESS_BEGINNER          
+          @gate.status = ExpressGate::STATES::EXPRESS_BEGINNER.to_i          
           lambda {
               @gate.demote_express_beginner!
             }.should_not raise_error(SimpleStateMachine::Exceptions::InvalidTransition)
@@ -251,10 +257,17 @@ describe SimpleStateMachine do
           ExpressGate.state_machine.persistency_method(:dummy_save)
         end
 
-        it "should call the persistency method when found" do
+        it "should persist on a shebang transition method" do
+          @gate.new_record?.should be_true
+          @gate.make_express_expert!
+          @gate.new_record?.should be_false
+          @gate.enum_state.should eql(ExpressGate::STATES::EXPRESS_EXPERT)
+        end
+
+        it "should not persist on a non-shebang transition method" do
           @gate.new_record?.should be_true
           @gate.make_express_expert
-          @gate.new_record?.should be_false
+          @gate.new_record?.should be_true
           @gate.enum_state.should eql(ExpressGate::STATES::EXPRESS_EXPERT)
         end
       end

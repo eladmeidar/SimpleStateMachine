@@ -103,8 +103,11 @@ module SimpleStateMachine
       @clazz.instance_eval do
 
         # Define the transition method
-        define_method("#{transition_name}") do
+        define_method("#{transition_name}") do |*args|
 
+          persist = args.first if args.any?
+          persist |= false
+          
           # check if the transition is available to the current state
           if self.class.state_machine.transitions[transition_name.to_s] && self.class.state_machine.transitions[transition_name.to_s][:from].include?(self.enum_status.to_sym.to_s)
             
@@ -117,7 +120,7 @@ module SimpleStateMachine
               fire_state_machine_event(current_state_events[:before_leave])
               fire_state_machine_event(next_state_events[:before_enter])
               self.send("#{self.class.state_machine.state_field}=", self.class.state_machine.states[self.class.state_machine.transitions[transition_name.to_s][:to]].to_i)
-              self.send(self.class.state_machine.persistency_method) if self.class.state_machine.persistent_mode?
+              self.send(self.class.state_machine.persistency_method) if self.class.state_machine.persistent_mode? && persist == true
               fire_state_machine_event(current_state_events[:after_leave])
               fire_state_machine_event(next_state_events[:after_enter])
             rescue Exception => e
@@ -131,7 +134,7 @@ module SimpleStateMachine
 
         # Define a transition method with a shebang
         define_method("#{transition_name}!") do
-          if !(self.send(transition_name))
+          if !(self.send(transition_name, true))
             raise Exceptions::InvalidTransition, "Could not transit '#{self.enum_status.to_sym.to_s}' to '#{options[:to]}'"
           else
             return true
