@@ -45,7 +45,8 @@ describe SimpleStateMachine do
             @gate.make_novice.should be_true
           }.should_not raise_error(SimpleStateMachine::Exceptions::InvalidTransition)
 
-        @gate.enum_state.should eql(Gate::STATES::NOVICE)
+        #@gate.enum_state.should eql(Gate::STATES::NOVICE)
+        @gate.novice?.should be_true
       end
 
       it "should allow a gate to transition from 'beginner' to 'novice', with shebang" do
