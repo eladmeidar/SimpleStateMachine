@@ -11,7 +11,7 @@ module SimpleStateMachine
 
     attr_accessor :clazz
 
-    def initialize(clazz)
+    def initialize(clazz)      
       @clazz = clazz
       @_states = []
       @events = {}
@@ -22,6 +22,7 @@ module SimpleStateMachine
     end
 
     def initialize_copy(orig)
+      puts 'initialize copy'
       super
       @states = orig.states.clone
       @_states = orig.instance_variable_get("@_states").clone
@@ -121,7 +122,7 @@ module SimpleStateMachine
       end
     end
 
-    def enumize!
+    def enumize!      
       @states = Enum.new(*@_states)
     end
 

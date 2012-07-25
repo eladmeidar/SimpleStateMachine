@@ -23,5 +23,6 @@ Gem::Specification.new do |gem|
   gem.add_development_dependency 'shoulda'
   gem.add_development_dependency 'sqlite3'
   gem.add_development_dependency 'minitest'
+  gem.add_development_dependency 'ruby-debug'
   gem.add_development_dependency 'ruby-debug-completion'
 end

@@ -7,7 +7,7 @@ class Gate
     sm.initial_state "beginner"
     sm.add_state "novice", :after_enter => :add_prize
     sm.add_state "expert", :after_enter => :add_prize
-    sm.add_transition :make_novice, :from => "beginner", :to => "novice"
+    sm.add_transition :make_novice, :from => ["beginner", "expert"], :to => "novice"
     sm.add_transition :make_expert, :from => "novice", :to => "expert"
   end
 
@@ -24,7 +24,7 @@ class Gate
     @new_record
   end
 
-  def initialize(initial_status = nil)
+  def initialize(initial_status = nil)    
     @status = initial_status
     @new_record = true
     @prize_won = ""

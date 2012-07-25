@@ -22,7 +22,6 @@ module SimpleStateMachine
 
     def state_machine(&block)
       return @sm if !(@sm.nil?) && !(block_given?)
-      puts "Setting state machine on #{self.name}"
       @sm ||= SimpleStateMachine::Base.new(self)
       @sm.instance_eval(&block) if block_given?
       @sm.enumize!

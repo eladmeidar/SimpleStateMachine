@@ -30,6 +30,3 @@ class Adam < Miki
     sm.add_transition :cry, :from => "dating_other_men", :to => "gang_raped"
   end
 end
-
-@miki = Miki.new
-@adam = Adam.new

@@ -10,4 +10,7 @@ require 'rspec/autorun'
 
 # Requiring custom spec helpers
 Dir[File.dirname(__FILE__) + "/spec_helpers/**/*.rb"].sort.each { |f| require File.expand_path(f) }
-Dir[File.dirname(__FILE__) + "/models/*.rb"].each { |f| require File.expand_path(f) }
+#Dir[File.dirname(__FILE__) + "/models/*.rb"].each { |f| require File.expand_path(f) }
+require "models/gate"
+require 'models/express_gate'
+require 'models/king_gate'
