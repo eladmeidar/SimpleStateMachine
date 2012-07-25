@@ -37,9 +37,14 @@ module SimpleStateMachine
 
   module InstanceMethods
 
-    def initialize(*args)
-      self.send("#{self.class.state_machine.state_field}=", self.class.state_machine.states[self.class.state_machine.initial_state].to_i)
-      super unless self.class.superclass == Object
+    def initialize(*args)      
+      self.send("#{self.class.state_machine.state_field}=", self.class.state_machine.states[self.class.state_machine.initial_state].to_i)            
+
+      begin
+        super
+      rescue ArgumentError
+        super()
+      end
     end
 
     def enum_status
