@@ -9,6 +9,8 @@ module SimpleStateMachine
                 :persistency_method,
                 :states_constant_name
 
+    attr_accessor :clazz
+
     def initialize(clazz)
       @clazz = clazz
       @_states = []
@@ -17,6 +19,18 @@ module SimpleStateMachine
       @state_field = "status"
       @states_constant_name = "STATES"
       @persistency_method = nil
+    end
+
+    def initialize_copy(orig)
+      super
+      @states = orig.states.clone
+      @_states = orig.instance_variable_get("@_states").clone
+      @events = orig.events.clone
+      @transitions = orig.transitions.clone
+      @initial_state = orig.initial_state.clone
+      @state_field = orig.state_field
+      @persistency_method = orig.persistency_method.clone unless @persistency_method.nil?
+      @states_constant_name = orig.states_constant_name.clone      
     end
 
     def states_constant_name(constant_name = nil)

@@ -6,18 +6,32 @@ module SimpleStateMachine
       include InstanceMethods
 
       alias :enum_state :enum_status
+
     end
   end
 
   module ClassMethods
 
+    def inherited(child)
+      me = self
+      child.class_eval do
+        @sm = me.state_machine.clone
+        @sm.clazz = self
+      end
+    end
+
     def state_machine(&block)
-      return @sm if @sm
+      return @sm if !(@sm.nil?) && !(block_given?)
+      puts "Setting state machine on #{self.name}"
       @sm ||= SimpleStateMachine::Base.new(self)
       @sm.instance_eval(&block) if block_given?
       @sm.enumize!
       self.const_set(@sm.states_constant_name,@sm.states)
       return @sm
+    end
+
+    def has_state_machine?
+      self.included_modules.include?(SimpleStateMachine)
     end
   end
 

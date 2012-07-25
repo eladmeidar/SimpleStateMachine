@@ -25,7 +25,11 @@ class Miki
 end
 
 class Adam < Miki
-
+  state_machine do |sm|
+    sm.add_state "gang_raped", :after_enter => :express_joy
+    sm.add_transition :cry, :from => "dating_other_men", :to => "gang_raped"
+  end
 end
 
-@miki = Adam.new
+@miki = Miki.new
+@adam = Adam.new
