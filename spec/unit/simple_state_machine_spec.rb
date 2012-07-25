@@ -16,6 +16,12 @@ describe SimpleStateMachine do
         Gate::STATES.all.should include(Gate::STATES::EXPERT)
       end
 
+      it "Should allow accessible methods to check if certain state is active on the including class" do
+        @gate.methods.should include("beginner?")
+        @gate.methods.should include("novice?")
+        @gate.methods.should include("expert?")
+      end
+
       it "should have a state_machine reference" do
         @gate.class.should respond_to(:state_machine)
       end
@@ -34,7 +40,7 @@ describe SimpleStateMachine do
 
       it "should force an initial status even if one specified by a default class constructor" do
         @gate = Gate.new("bogus_status")        
-        @gate.enum_state.should eql(Gate::STATES::BEGINNER)
+        @gate.beginner?.should be_true
       end
     end
 
@@ -45,7 +51,7 @@ describe SimpleStateMachine do
             @gate.make_novice.should be_true
           }.should_not raise_error(SimpleStateMachine::Exceptions::InvalidTransition)
 
-        @gate.enum_state.should eql(Gate::STATES::NOVICE)
+        @gate.novice?.should be_true
       end
 
       it "should allow a gate to transition from 'beginner' to 'novice', with shebang" do
@@ -53,7 +59,7 @@ describe SimpleStateMachine do
             @gate.make_novice!
           }.should_not raise_error(SimpleStateMachine::Exceptions::InvalidTransition)
 
-        @gate.enum_state.should eql(Gate::STATES::NOVICE)
+        @gate.novice?.should be_true
       end
 
       it "should not allow a gate to transition from 'beginner' to 'expert'" do
@@ -61,7 +67,7 @@ describe SimpleStateMachine do
             @gate.make_expert.should be_false
           }.should_not raise_error(SimpleStateMachine::Exceptions::InvalidTransition)
 
-        @gate.enum_state.should eql(Gate::STATES::BEGINNER)
+        @gate.beginner?.should be_true
       end
 
       it "should raise an exception if a gate tries to transition from 'beginner' to 'expert' with a shebang" do
@@ -69,7 +75,7 @@ describe SimpleStateMachine do
             @gate.make_expert!
           }.should raise_error(SimpleStateMachine::Exceptions::InvalidTransition, "Could not transit 'beginner' to 'expert'")
 
-        @gate.enum_state.should eql(Gate::STATES::BEGINNER)
+        @gate.beginner?.should be_true
       end
 
       it "should allow a gate to transtition from 'expert' back to 'novice', normal method" do
@@ -78,7 +84,7 @@ describe SimpleStateMachine do
             @gate.make_novice.should be_true
           }.should_not raise_error(SimpleStateMachine::Exceptions::InvalidTransition)
 
-        @gate.enum_state.should eql(Gate::STATES::NOVICE)
+        @gate.novice?.should be_true
       end
       
       it "should allow a gate to transtition from 'expert' back to 'novice', with shebang" do
@@ -87,7 +93,7 @@ describe SimpleStateMachine do
             @gate.make_novice!
           }.should_not raise_error(SimpleStateMachine::Exceptions::InvalidTransition)
 
-        @gate.enum_state.should eql(Gate::STATES::NOVICE)
+        @gate.novice?.should be_true
       end
 
     end
@@ -101,14 +107,14 @@ describe SimpleStateMachine do
         @gate.new_record?.should be_true
         @gate.make_novice!
         @gate.new_record?.should be_false
-        @gate.enum_state.should eql(Gate::STATES::NOVICE)
+        @gate.novice?.should be_true
       end
 
       it "should not persist on a non-shebang persistency transition method" do
         @gate.new_record?.should be_true
         @gate.make_novice.should be_true
         @gate.new_record?.should be_true
-        @gate.enum_state.should eql(Gate::STATES::NOVICE)
+        @gate.novice?.should be_true
       end
     end
 
@@ -117,7 +123,7 @@ describe SimpleStateMachine do
         @gate.prize_won.should be_empty
         @gate.make_novice.should be_true
         @gate.prize_won.should eql("*")
-        @gate.enum_state.should eql(Gate::STATES::NOVICE)
+        @gate.novice?.should be_true
       end
     end
   end
@@ -141,6 +147,18 @@ describe SimpleStateMachine do
           ExpressGate::STATES.all.should include(ExpressGate::STATES::EXPRESS_EXPERT)
           ExpressGate::STATES.all.should include(ExpressGate::STATES::MIKI_LEVEL)
         end        
+        
+        it "Should allow accessible methods to check if certain state is active on the including class for parent class' states" do
+          @gate.methods.should include("beginner?")
+          @gate.methods.should include("novice?")
+          @gate.methods.should include("expert?")
+        end
+
+        it "Should allow accessible methods to check if certain state is active on the including class for child class' states" do
+          @gate.methods.should include("express_beginner?")
+          @gate.methods.should include("express_expert?")
+          @gate.methods.should include("miki_level?")
+        end
 
         it "should have a state_machine reference" do
           @gate.class.should respond_to(:state_machine)
@@ -160,7 +178,7 @@ describe SimpleStateMachine do
 
         it "should force an initial status even if one specified by a default class constructor" do          
           @gate = ExpressGate.new("bogus_status")
-          @gate.enum_state.should eql(ExpressGate::STATES::EXPRESS_BEGINNER)
+          @gate.express_beginner?.should be_true
         end
       end
 
@@ -172,7 +190,7 @@ describe SimpleStateMachine do
               @gate.make_express_beginner.should be_true
             }.should_not raise_error(SimpleStateMachine::Exceptions::InvalidTransition)
 
-          @gate.enum_state.should eql(ExpressGate::STATES::EXPRESS_BEGINNER)
+          @gate.express_beginner?.should be_true
         end
 
         it "should allow a gate to transition from a state that comes from parent 'expert' to 'express_beginner', shebang method" do
@@ -181,7 +199,7 @@ describe SimpleStateMachine do
               @gate.make_express_beginner!
             }.should_not raise_error(SimpleStateMachine::Exceptions::InvalidTransition)
 
-          @gate.enum_state.should eql(ExpressGate::STATES::EXPRESS_BEGINNER)
+          @gate.express_beginner?.should be_true
         end
 
         it "should not allow a gate to transition from a state that comes from parent 'beginner' to 'express_beginner', normal method" do
@@ -190,7 +208,7 @@ describe SimpleStateMachine do
               @gate.make_express_beginner.should be_false
             }.should_not raise_error(SimpleStateMachine::Exceptions::InvalidTransition)
 
-          @gate.enum_state.should eql(ExpressGate::STATES::BEGINNER)
+          @gate.beginner?.should be_true
         end      
 
         it "should not allow a gate to transition from a state that comes from parent 'beginner' to 'express_beginner', shebang method" do
@@ -199,7 +217,7 @@ describe SimpleStateMachine do
               @gate.make_express_beginner!
             }.should raise_error(SimpleStateMachine::Exceptions::InvalidTransition, "Could not transit 'beginner' to 'express_beginner'")
 
-          @gate.enum_state.should eql(ExpressGate::STATES::BEGINNER)
+          @gate.beginner?.should be_true
         end
 
         it "should allow a gate to transition from 'express_beginner' to 'express_expert', normal method" do
@@ -207,7 +225,7 @@ describe SimpleStateMachine do
               @gate.make_express_expert.should be_true
             }.should_not raise_error(SimpleStateMachine::Exceptions::InvalidTransition)
 
-          @gate.enum_state.should eql(ExpressGate::STATES::EXPRESS_EXPERT)
+          @gate.express_expert?.should be_true
         end
 
         it "should allow a gate to transition from 'express_beginner' to 'express_expert', with shebang" do
@@ -215,7 +233,7 @@ describe SimpleStateMachine do
               @gate.make_express_expert!
             }.should_not raise_error(SimpleStateMachine::Exceptions::InvalidTransition)
 
-          @gate.enum_state.should eql(ExpressGate::STATES::EXPRESS_EXPERT)
+          @gate.express_expert?.should be_true
         end
 
         it "should not allow a gate to transition from 'express_beginner' to 'miki_level'" do
@@ -223,7 +241,7 @@ describe SimpleStateMachine do
               @gate.make_miki.should be_false
             }.should_not raise_error(SimpleStateMachine::Exceptions::InvalidTransition)
 
-          @gate.enum_state.should eql(ExpressGate::STATES::EXPRESS_BEGINNER)
+          @gate.express_beginner?.should be_true
         end
 
         it "should raise an exception if a gate tries to transition from 'express_beginner' to 'miki_level' with a shebang" do
@@ -231,7 +249,7 @@ describe SimpleStateMachine do
               @gate.make_miki!
             }.should raise_error(SimpleStateMachine::Exceptions::InvalidTransition, "Could not transit 'express_beginner' to 'miki_level'")
 
-          @gate.enum_state.should eql(ExpressGate::STATES::EXPRESS_BEGINNER)
+          @gate.express_beginner?.should be_true
         end
 
         it "should allow a gate to transition from a state that comes from child 'express_beginner' to 'expert', normal method" do
@@ -239,7 +257,7 @@ describe SimpleStateMachine do
           lambda {
               @gate.demote_express_beginner.should be_true
             }.should_not raise_error(SimpleStateMachine::Exceptions::InvalidTransition)  
-          @gate.enum_state.should eql(ExpressGate::STATES::EXPERT)
+          @gate.expert?.should be_true
         end
 
         it "should allow a gate to transition from a state that comes from child 'express_beginner' to state from parent 'expert', shebang method" do
@@ -248,7 +266,7 @@ describe SimpleStateMachine do
               @gate.demote_express_beginner!
             }.should_not raise_error(SimpleStateMachine::Exceptions::InvalidTransition)
 
-          @gate.enum_state.should eql(ExpressGate::STATES::EXPERT)
+          @gate.expert?.should be_true
         end
       end
 
@@ -261,14 +279,14 @@ describe SimpleStateMachine do
           @gate.new_record?.should be_true
           @gate.make_express_expert!
           @gate.new_record?.should be_false
-          @gate.enum_state.should eql(ExpressGate::STATES::EXPRESS_EXPERT)
+          @gate.express_expert?.should be_true
         end
 
         it "should not persist on a non-shebang transition method" do
           @gate.new_record?.should be_true
           @gate.make_express_expert
           @gate.new_record?.should be_true
-          @gate.enum_state.should eql(ExpressGate::STATES::EXPRESS_EXPERT)
+          @gate.express_expert?.should be_true
         end
       end
 
@@ -277,7 +295,7 @@ describe SimpleStateMachine do
           @gate.prize_won.should be_empty
           @gate.make_express_expert
           @gate.prize_won.should eql("*")
-          @gate.enum_state.should eql(ExpressGate::STATES::EXPRESS_EXPERT)
+          @gate.express_expert?.should be_true
         end
       end
     end    
