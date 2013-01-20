@@ -9,12 +9,6 @@ describe SimpleStateMachine do
     end
 
     describe "- Basic operations" do
-      it "Should allow accessible constants on the including class" do
-        Gate.constants.should include("STATES")
-        Gate::STATES.all.should include(Gate::STATES::BEGINNER)
-        Gate::STATES.all.should include(Gate::STATES::NOVICE)
-        Gate::STATES.all.should include(Gate::STATES::EXPERT)
-      end
 
       it "Should allow accessible methods to check if certain state is active on the including class" do
         @gate.methods.should include("beginner?")
@@ -79,7 +73,7 @@ describe SimpleStateMachine do
       end
 
       it "should allow a gate to transtition from 'expert' back to 'novice', normal method" do
-        @gate.status = Gate::STATES::EXPERT.index
+        @gate.status = Gate.state_machine.states["expert"]
         lambda {
             @gate.make_novice.should be_true
           }.should_not raise_error(SimpleStateMachine::Exceptions::InvalidTransition)
@@ -88,7 +82,7 @@ describe SimpleStateMachine do
       end
       
       it "should allow a gate to transtition from 'expert' back to 'novice', with shebang" do
-        @gate.status = Gate::STATES::EXPERT.index
+        @gate.status = Gate.state_machine.states["expert"]
         lambda {
             @gate.make_novice!
           }.should_not raise_error(SimpleStateMachine::Exceptions::InvalidTransition)
@@ -140,12 +134,12 @@ describe SimpleStateMachine do
       describe "- Basic operations" do
         it "Should allow accessible constants on the including class" do
           ExpressGate.constants.should include("STATES")
-          ExpressGate::STATES.all.should include(ExpressGate::STATES::BEGINNER)
-          ExpressGate::STATES.all.should include(ExpressGate::STATES::NOVICE)
-          ExpressGate::STATES.all.should include(ExpressGate::STATES::EXPERT)
-          ExpressGate::STATES.all.should include(ExpressGate::STATES::EXPRESS_BEGINNER)
-          ExpressGate::STATES.all.should include(ExpressGate::STATES::EXPRESS_EXPERT)
-          ExpressGate::STATES.all.should include(ExpressGate::STATES::MIKI_LEVEL)
+          ExpressGate::STATES["beginner"].should_not be_nil
+          ExpressGate::STATES["novice"].should_not be_nil
+          ExpressGate::STATES["expert"].should_not be_nil
+          ExpressGate::STATES["express_beginner"].should_not be_nil
+          ExpressGate::STATES["express_expert"].should_not be_nil
+          ExpressGate::STATES["miki_level"].should_not be_nil
         end        
         
         it "Should allow accessible methods to check if certain state is active on the including class for parent class' states" do
@@ -186,7 +180,7 @@ describe SimpleStateMachine do
 
         it "should allow a gate to transition from a state that comes from parent 'expert' to 'express_beginner', normal method" do
           lambda {
-              @gate.status = ExpressGate::STATES::EXPERT.index
+              @gate.status = ExpressGate.state_machine.states["expert"]
               @gate.make_express_beginner.should be_true
             }.should_not raise_error(SimpleStateMachine::Exceptions::InvalidTransition)
 
@@ -195,7 +189,7 @@ describe SimpleStateMachine do
 
         it "should allow a gate to transition from a state that comes from parent 'expert' to 'express_beginner', shebang method" do
           lambda {
-              @gate.status = ExpressGate::STATES::EXPERT.index
+              @gate.status = ExpressGate.state_machine.states["expert"]
               @gate.make_express_beginner!
             }.should_not raise_error(SimpleStateMachine::Exceptions::InvalidTransition)
 
@@ -203,7 +197,7 @@ describe SimpleStateMachine do
         end
 
         it "should not allow a gate to transition from a state that comes from parent 'beginner' to 'express_beginner', normal method" do
-          @gate.status = ExpressGate::STATES::BEGINNER.index
+          @gate.status = ExpressGate.state_machine.states["beginner"]
           lambda {
               @gate.make_express_beginner.should be_false
             }.should_not raise_error(SimpleStateMachine::Exceptions::InvalidTransition)
@@ -212,7 +206,7 @@ describe SimpleStateMachine do
         end      
 
         it "should not allow a gate to transition from a state that comes from parent 'beginner' to 'express_beginner', shebang method" do
-          @gate.status = ExpressGate::STATES::BEGINNER.index
+          @gate.status = ExpressGate.state_machine.states["beginner"]
           lambda {
               @gate.make_express_beginner!
             }.should raise_error(SimpleStateMachine::Exceptions::InvalidTransition, "Could not transit 'beginner' to 'express_beginner'")
@@ -253,7 +247,7 @@ describe SimpleStateMachine do
         end
 
         it "should allow a gate to transition from a state that comes from child 'express_beginner' to 'expert', normal method" do
-          @gate.status = ExpressGate::STATES::EXPRESS_BEGINNER.to_i         
+          @gate.status = ExpressGate.state_machine.states["express_beginner"]         
           lambda {
               @gate.demote_express_beginner.should be_true
             }.should_not raise_error(SimpleStateMachine::Exceptions::InvalidTransition)  
@@ -261,7 +255,7 @@ describe SimpleStateMachine do
         end
 
         it "should allow a gate to transition from a state that comes from child 'express_beginner' to state from parent 'expert', shebang method" do
-          @gate.status = ExpressGate::STATES::EXPRESS_BEGINNER.to_i          
+          @gate.status = ExpressGate.state_machine.states["express_beginner"]   
           lambda {
               @gate.demote_express_beginner!
             }.should_not raise_error(SimpleStateMachine::Exceptions::InvalidTransition)

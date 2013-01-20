@@ -34,7 +34,7 @@ module SimpleStateMachine
       @sm ||= SimpleStateMachine::Base.new(self)
       @sm.instance_eval(&block) if block_given?
       @sm.enumize!
-      self.const_set(@sm.states_constant_name,@sm.states)
+      self.const_set(@sm.states_constant_name,@sm.states).freeze
       return @sm
     end
   end
@@ -60,6 +60,11 @@ module SimpleStateMachine
     # Return the current state
     def current_state
       self.send(self.class.state_machine.state_field)
+    end
+
+    # human name for status
+    def human_status_name
+      enum_status
     end
 
     private

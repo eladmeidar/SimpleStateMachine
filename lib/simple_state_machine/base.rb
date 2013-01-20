@@ -83,8 +83,9 @@ module SimpleStateMachine
       # Register events
       @events[human_state_name(state_name)] = options.dup
 
-      # define a "#state?" method on the object class
       @clazz.instance_eval do
+
+        # define a "#state?" method on the object instance
         define_method("#{state_name}?") do
           self.send(self.class.state_machine.state_field) == self.class.state_machine.states[state_name].to_i
         end
@@ -115,7 +116,7 @@ module SimpleStateMachine
             next_state_events = self.class.state_machine.events[self.class.state_machine.transitions[transition_name.to_s][:to]]
 
             begin
-              # Fire events and perform transition (and persistency if needed)
+              # Fire events and perform transition (and persistence if needed)
               fire_state_machine_event(current_state_events[:before_leave])
               fire_state_machine_event(next_state_events[:before_enter])
               self.send("#{self.class.state_machine.state_field}=", self.class.state_machine.states[self.class.state_machine.transitions[transition_name.to_s][:to]].to_i)
@@ -153,7 +154,11 @@ module SimpleStateMachine
       !(@persistency_method.nil?)
     end
 
-    protected
+    def states
+      @states
+    end
+    
+    protected 
 
     private 
 
