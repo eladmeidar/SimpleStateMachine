@@ -1,3 +1,9 @@
+# Note:
+
+This code used to contain some offensive wording as part of our test suite that was not removed or at least moderated while
+moving this project from private to public status. the people that worked on this project and myself especially are sincerely sorry and we absolutely 100% didn't mean
+to offend anyone. sorry. :(
+
 # SimpleStateMachine
 
 __SimpleStateMachine__ is a simple (suprisingly) state machine aimed to provide a simpler implementation and setup for ruby based state machines.
