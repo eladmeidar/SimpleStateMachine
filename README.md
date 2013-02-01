@@ -60,20 +60,6 @@ __SimpleStateMachine__ provides an easy interface to add states and transitions:
 * `add_transition`: defines a transtions with destination state and source state (or multiple in an array)
 * `persistency_method`: __SimpleStateMachine__ doesn't rely on the existance of a persistency layer (ActiveRecord for example), so if you want to have this option you'll need to specify the persistency method to use (in ActiveRecord's case, use "save" or "save!")
 
-### Enum States
-
-__SimpleStateMachine__ uses Enum constants to represent states to allow better database integration (integers instead of strings to represent states).
-In the example above you'll be able to use:
-
-    Elad::STATES::Happy # => Happy
-    Elad::STATES::Mad   # => Mad
-    Elad::STATES::Calm  # => Calm
-    Elad::STATES.all    # => [Happy, Mad, Calm]
-
-also, the enum representation is available on any of the constants
-
-    Elad::STATES::Happy.to_i # => 0
-
 ### Accessing States
 
 __SimpleStateMachine__ will save the state's enum value as integer to the defined attribute, in order to access the string / constant representation of the state use `#enum_state`:
@@ -81,8 +67,8 @@ __SimpleStateMachine__ will save the state's enum value as integer to the define
     > elad = Elad.new
     > elad.status
     0
-    > elad.enum_state
-    Happy
+    > elad.human_status_name
+    "happy"
 
 ### Callbacks / Events
 
