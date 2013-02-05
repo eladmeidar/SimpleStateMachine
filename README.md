@@ -4,9 +4,9 @@ This code used to contain some offensive wording as part of our test suite that 
 moving this project from private to public status. the people that worked on this project and myself especially are sincerely sorry and we absolutely 100% didn't mean
 to offend anyone. sorry. :(
 
-# SimpleStateMachine
+# SimplerStateMachine
 
-__SimpleStateMachine__ is a simple (suprisingly) state machine aimed to provide a simpler implementation and setup for ruby based state machines.
+__SimplerStateMachine__ is a simple (suprisingly) state machine aimed to provide a simpler implementation and setup for ruby based state machines.
 It supports:
 
 * States as enum
@@ -17,7 +17,7 @@ It supports:
 
 Add this line to your application's Gemfile:
 
-    gem 'simple_state_machine'
+    gem 'simpler_state_machine'
 
 And then execute:
 
@@ -29,7 +29,7 @@ Or install it yourself as:
 
 ## Usage
 
-__SimpleStateMachine__ provides an easy interface to add states and transitions:
+__SimplerStateMachine__ provides an easy interface to add states and transitions:
 
 
 ### Declaration
@@ -62,7 +62,7 @@ __SimpleStateMachine__ provides an easy interface to add states and transitions:
 
 ### Accessing States
 
-__SimpleStateMachine__ will save the state's enum value as integer to the defined attribute, in order to access the string / constant representation of the state use `#enum_state`:
+__SimplerStateMachine__ will save the state's enum value as integer to the defined attribute, in order to access the string / constant representation of the state use `#enum_state`:
 
     > elad = Elad.new
     > elad.status
@@ -72,7 +72,7 @@ __SimpleStateMachine__ will save the state's enum value as integer to the define
 
 ### Callbacks / Events
 
-__SimpleStateMachine__ makes several callbacks available when defining a state and will fire them when a state transtion is made.
+__SimplerStateMachine__ makes several callbacks available when defining a state and will fire them when a state transtion is made.
 The available callbacks are:
 
 * `:before_enter`: runs before the state is entered.
