@@ -1,4 +1,4 @@
-class Enum < Hash
+class SimplerStateMachine::Enum < Hash
 
   def initialize(*members)
     super()

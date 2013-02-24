@@ -146,7 +146,7 @@ module SimplerStateMachine
 
     # Transform the states array to enum
     def enumize!
-      @states = Enum.new(*@_states)
+      @states = SimplerStateMachine::Enum.new(*@_states)
     end
 
     # Persistency method
