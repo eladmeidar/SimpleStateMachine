@@ -4,7 +4,7 @@ SimpleStateMachine
 
 This module should be mixed in to a class that needs a state machine implementation. refer to the readme.
 =end
-module SimpleStateMachine
+module SimplerStateMachine
 
   def self.included(base) #:nodoc:
     base.class_eval do

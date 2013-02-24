@@ -1,5 +1,5 @@
 # FFU
-module SimpleStateMachine
+module SimplerStateMachine
   class Event
   end
 end

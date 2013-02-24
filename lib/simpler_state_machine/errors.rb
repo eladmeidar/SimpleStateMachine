@@ -1,4 +1,4 @@
-module SimpleStateMachine
+module SimplerStateMachine
 
   module Exceptions
     class InvalidTransition < RuntimeError; end

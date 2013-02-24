@@ -1,5 +1,5 @@
 # -*- encoding: utf-8 -*-
-require File.expand_path('../lib/simple_state_machine/version', __FILE__)
+require File.expand_path('../lib/simpler_state_machine/version', __FILE__)
 
 Gem::Specification.new do |gem|
   gem.authors       = ["Elad Meidar"]
@@ -13,7 +13,7 @@ Gem::Specification.new do |gem|
   gem.test_files    = `git ls-files -- {test,spec,features}/*`.split("\n")
   gem.name          = "simpler_state_machine"
   gem.require_paths = ["lib"]
-  gem.version       = SimpleStateMachine::VERSION
+  gem.version       = SimplerStateMachine::VERSION
 
   gem.add_development_dependency 'activerecord'
   gem.add_development_dependency 'rake'

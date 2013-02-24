@@ -1,5 +1,5 @@
 # FFU
-module SimpleStateMachine #:nodoc 
+module SimplerStateMachine #:nodoc 
   class Transition
 
     attr_accessor :to, :from

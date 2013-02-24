@@ -1,4 +1,4 @@
-module SimpleStateMachine
+module SimplerStateMachine
   class Base
 
     attr_reader :states,                # Holds the state enum
