@@ -96,7 +96,7 @@ module SimplerStateMachine
     def add_transition(transition_name, options = {})
 
       # Convert from states to array
-      options[:from] = options[:from].is_a?(Array) ? options[:from] : options[:from].to_a
+      options[:from] = options[:from].is_a?(Array) ? options[:from] : [options[:from]]
 
       # Register transactions
       @transitions[transition_name.to_s] = options

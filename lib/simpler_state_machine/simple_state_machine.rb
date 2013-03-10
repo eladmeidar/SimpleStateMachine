@@ -31,7 +31,7 @@ module SimplerStateMachine
     # Create or return a state machine
     def state_machine(&block)
       return @sm if !(@sm.nil?) && !(block_given?)
-      @sm ||= SimpleStateMachine::Base.new(self)
+      @sm ||= SimplerStateMachine::Base.new(self)
       @sm.instance_eval(&block) if block_given?
       @sm.enumize!
       self.const_set(@sm.states_constant_name,@sm.states).freeze

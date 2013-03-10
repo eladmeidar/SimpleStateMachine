@@ -1,6 +1,6 @@
 $LOAD_PATH.unshift(File.expand_path(File.dirname(__FILE__)))
 $LOAD_PATH.unshift(File.expand_path(File.join(File.dirname(__FILE__), '..', 'lib')))
-require 'simple_state_machine'
+require 'simpler_state_machine'
 
 require 'rspec'
 require 'rspec/autorun'

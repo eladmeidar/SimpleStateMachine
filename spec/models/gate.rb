@@ -1,5 +1,5 @@
 class Gate
-  include SimpleStateMachine
+  include SimplerStateMachine
 
   attr_accessor :prize_won, :status, :new_record
 
