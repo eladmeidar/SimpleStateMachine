@@ -43,13 +43,12 @@ module SimplerStateMachine
 
     # Set the initial status value
     def initialize(*args)      
-      self.send("#{self.class.state_machine.state_field}=", self.class.state_machine.states[self.class.state_machine.initial_state].to_i)            
-
       begin
         super
       rescue ArgumentError # Catch in case the super does not get parameters
         super()
       end
+      self.send("#{self.class.state_machine.state_field}=", self.class.state_machine.states[self.class.state_machine.initial_state].to_i)
     end
 
     # Return the enum status
